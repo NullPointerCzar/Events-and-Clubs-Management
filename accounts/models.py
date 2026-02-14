@@ -21,6 +21,8 @@ class UserManager(BaseUserManager):
         """Create and return a superuser (admin) with elevated privileges."""
         extra_fields.setdefault('user_type', 'Admin')
         extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_staff', True)      # Required to access Django admin
+        extra_fields.setdefault('is_superuser', True)   # Full permissions
         return self.create_user(email, full_name, password, **extra_fields)
 
 
@@ -45,6 +47,8 @@ class User(AbstractBaseUser):
     # via set_password() and check_password(). No separate password_hash needed.
     user_type = models.CharField(max_length=50, choices=USER_TYPE_CHOICES, default='Student')
     is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)      # Required by Django admin — allows access to /admin/
+    is_superuser = models.BooleanField(default=False)   # Required by Django — grants all permissions
     created_at = models.DateTimeField(auto_now_add=True)  # Matches DB DEFAULT CURRENT_TIMESTAMP
 
     USERNAME_FIELD = 'email'  # Log in with email since there's no username column
@@ -57,6 +61,14 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return f"{self.full_name} ({self.email})"
+
+    # Required by Django admin — checks if user has a specific permission
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    # Required by Django admin — checks if user can view a given app in admin
+    def has_module_perms(self, app_label):
+        return self.is_superuser
 
 
 class Role(models.Model):
