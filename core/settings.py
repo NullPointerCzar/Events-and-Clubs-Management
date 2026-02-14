@@ -127,3 +127,7 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'accounts.User'
 
+# Default primary key field type for models that don't specify one explicitly
+# https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
