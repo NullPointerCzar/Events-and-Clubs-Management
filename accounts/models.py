@@ -83,6 +83,31 @@ class UserRole(models.Model):
         db_column='role_id',
         related_name='role_users'  # Access via role.role_users.all()
     )
+    
+    # ... inside class User(AbstractBaseUser):
+
+    @property
+    def is_staff(self):
+        "Is the user a member of staff?"
+        # logic: Only 'Admin' users can access the Django Admin panel
+        return self.user_type == 'Admin'
+
+    @property
+    def is_superuser(self):
+        "Is the user a superuser?"
+        return self.user_type == 'Admin'
+
+    def has_perm(self, perm, obj=None):
+        "Does the user have a specific permission?"
+        return self.user_type == 'Admin'
+
+    def has_module_perms(self, app_label):
+        "Does the user have permissions to view the app `app_label`?"
+        return self.user_type == 'Admin'
+
+    class Meta:
+        db_table = 'Users'
+    # ... rest of your code
 
     class Meta:
         db_table = 'User_Roles'
