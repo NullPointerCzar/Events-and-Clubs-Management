@@ -41,8 +41,8 @@ class User(AbstractBaseUser):
     user_id = models.AutoField(primary_key=True)
     full_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    password_hash = models.CharField(max_length=255)  # Matches DB column — used for security/hashing
-    # NOTE: AbstractBaseUser also provides a 'password' field used by Django auth internally
+    # password field is inherited from AbstractBaseUser — Django handles hashing automatically
+    # via set_password() and check_password(). No separate password_hash needed.
     user_type = models.CharField(max_length=50, choices=USER_TYPE_CHOICES, default='Student')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)  # Matches DB DEFAULT CURRENT_TIMESTAMP
