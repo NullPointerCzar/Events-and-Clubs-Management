@@ -4,7 +4,7 @@ from .models import Event, EventApproval
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('event_id', 'title', 'organizer_type', 'status', 'event_date', 'created_by')
+    list_display = ('id', 'title', 'organizer_type', 'status', 'event_date', 'created_by')
     list_filter = ('status', 'organizer_type', 'participation_type')  # Multi-filter sidebar
     search_fields = ('title', 'description')
     ordering = ('-event_date',)  # Upcoming events first

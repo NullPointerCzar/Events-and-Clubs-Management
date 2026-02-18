@@ -1,53 +1,36 @@
 from django.db import models
+from accounts.models import User
+from events.models import Event
 
 
 class EventRegistration(models.Model):
-    """
-    Tracks user registrations for events.
-    A user can register for an event only once (enforced by unique_together).
-    """
+    # Django will create a standard 'id' automatically
     event = models.ForeignKey(
-        'events.Event', on_delete=models.CASCADE,
-        db_column='event_id',
-        related_name='registrations'  # Access via event.registrations.all()
-    )
+        Event, on_delete=models.CASCADE, related_name='registrations')
     user = models.ForeignKey(
-        'accounts.User', on_delete=models.CASCADE,
-        db_column='user_id',
-        related_name='event_registrations'  # Access via user.event_registrations.all()
-    )
-    registered_at = models.DateTimeField(auto_now_add=True)  # Auto-set on creation
+        User, on_delete=models.CASCADE, related_name='event_registrations')
+    registered_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'Event_Registrations'
-        unique_together = (('event', 'user'),)  # Prevents duplicate registrations
+        # This ensures a user can't register for the same event twice
+        unique_together = ('event', 'user')
+        verbose_name = "Event Registration"
 
     def __str__(self):
-        return f"{self.user.full_name} → {self.event.title}"
+        return f"{self.user.full_name} -> {self.event.title}"
 
 
 class Attendance(models.Model):
-    """
-    Records attendance for events.
-    Separate from registration — a user can register but not attend.
-    """
     event = models.ForeignKey(
-        'events.Event', on_delete=models.CASCADE,
-        db_column='event_id',
-        related_name='attendance_records'  # Access via event.attendance_records.all()
-    )
+        Event, on_delete=models.CASCADE, related_name='attendance_records')
     user = models.ForeignKey(
-        'accounts.User', on_delete=models.CASCADE,
-        db_column='user_id',
-        related_name='attendance_records'  # Access via user.attendance_records.all()
-    )
-    present = models.BooleanField(default=False)  # True = attended, False = absent
-    marked_at = models.DateTimeField(auto_now_add=True)  # When attendance was recorded
+        User, on_delete=models.CASCADE, related_name='attended_events')
+    present = models.BooleanField(default=False)
+    marked_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'Attendance'
-        unique_together = (('event', 'user'),)  # One attendance record per user per event
+        unique_together = ('event', 'user')
 
     def __str__(self):
         status = "Present" if self.present else "Absent"
-        return f"{self.user.full_name} — {self.event.title} ({status})"
+        return f"{self.user.full_name} at {self.event.title}: {status}"
