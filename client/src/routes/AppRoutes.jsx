@@ -6,20 +6,20 @@ import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "../layouts/MainLayout";
 import AdminLayout from "../layouts/AdminLayout";
 
+import AdminDashboard from "../pages/admin/AdminDashboard";
 import Users from "../pages/admin/Users";
+import Students from "../pages/admin/Students";
+import Faculty from "../pages/admin/Faculty";
 import CreateUser from "../pages/admin/CreateUser";
+import EditUser from "../pages/admin/EditUser";
 import Clubs from "../pages/admin/Clubs";
+import CreateClub from "../pages/admin/CreateClub";
 import AdminEvents from "../pages/admin/AdminEvents";
 import EventAttendance from "../pages/admin/EventAttendance";
 import ProposeEvent from "../pages/student/ProposeEvent";
 import EventDiscovery from "../pages/student/EventDiscovery";
 import MyEvents from "../pages/student/MyEvents";
 import FacultyEvents from "../pages/faculty/FacultyEvents";
-
-// Placeholder page components — replace with real pages as you build them
-const AdminDashboard = () => (
-  <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-);
 
 const AppRoutes = () => {
   return (
@@ -39,8 +39,12 @@ const AppRoutes = () => {
       >
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<Users />} />
+        <Route path="/admin/students" element={<Students />} />
+        <Route path="/admin/faculty" element={<Faculty />} />
         <Route path="/admin/users/create" element={<CreateUser />} />
+        <Route path="/admin/users/:id/edit" element={<EditUser />} />
         <Route path="/admin/clubs" element={<Clubs />} />
+        <Route path="/admin/clubs/create" element={<CreateClub />} />
         <Route path="/admin/events" element={<AdminEvents />} />
         <Route path="/admin/events/:eventId/attendance" element={<EventAttendance />} />
       </Route>

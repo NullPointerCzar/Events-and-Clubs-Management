@@ -5,10 +5,13 @@ from .models import User
 import re
 
 class UserSerializer(serializers.ModelSerializer):
+    department_name = serializers.CharField(
+        source='department.department_name', read_only=True
+    )
+
     class Meta:
         model = User
-        # Using the standard 'id' now!
-        fields = ['id', 'full_name', 'email', 'user_type', 'roll_number', 'is_active', 'password']
+        fields = ['id', 'full_name', 'email', 'user_type', 'department', 'department_name', 'branch', 'roll_number', 'is_active', 'password']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -34,6 +37,41 @@ class UserSerializer(serializers.ModelSerializer):
         # This is crucial: it uses the UserManager we wrote in models.py 
         # to hash the password properly.
         return User.objects.create_user(**validated_data)
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for updating an existing user (password optional)."""
+    department_name = serializers.CharField(
+        source='department.department_name', read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = ['id', 'full_name', 'email', 'user_type', 'department', 'department_name', 'branch', 'roll_number', 'is_active', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True, 'required': False},
+        }
+
+    def validate(self, data):
+        user_type = data.get('user_type', self.instance.user_type if self.instance else None)
+        roll_number = data.get('roll_number', self.instance.roll_number if self.instance else None)
+
+        if user_type == 'Student' and roll_number:
+            pattern = r'^NCE\d{3}[A-Z]{3}\d{3}$'
+            if not re.match(pattern, roll_number):
+                raise serializers.ValidationError({
+                    "roll_number": "Invalid format. Must be 'NCE' followed by 3 digits, 3 letters, and 3 digits."
+                })
+        return data
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

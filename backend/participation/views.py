@@ -11,7 +11,6 @@ from .serializers import (
     MyRegistrationSerializer,
 )
 from events.models import Event
-from clubs.models import ClubMember
 
 
 # ─── Event Registration ────────────────────────────────────────────

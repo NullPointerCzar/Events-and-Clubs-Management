@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser } from "../../api/users";
+import { createUser, getDepartments } from "../../api/users";
+
+const BRANCHES = [
+  { value: "BCT", label: "BCT - Computer" },
+  { value: "BCE", label: "BCE - Civil" },
+  { value: "BEE", label: "BEE - Electrical" },
+  { value: "BEI", label: "BEI - Electronics" },
+];
 
 const CreateUser = () => {
     const navigate = useNavigate();
@@ -8,11 +15,20 @@ const CreateUser = () => {
         full_name: "",
         email: "",
         password: "",
-        user_type: "Student", // Default to Student
-        roll_number: "", // Only if user_type is Student
+        user_type: "Student",
+        roll_number: "",
+        branch: "",
+        department: "",
     });
+    const [departments, setDepartments] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        getDepartments()
+            .then((res) => setDepartments(res.data))
+            .catch(() => {});
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
@@ -27,8 +43,26 @@ const CreateUser = () => {
         setLoading(true);
 
         try {
-            await createUser(formData);
-            navigate("/admin/users"); // Redirect to list on success
+            const payload = { ...formData };
+            // Only send roll_number and branch for students
+            if (payload.user_type !== "Student") {
+                delete payload.roll_number;
+                delete payload.branch;
+            }
+            // Only send department for Faculty
+            if (payload.user_type !== "Faculty") {
+                delete payload.department;
+            }
+            if (payload.department === "") {
+                delete payload.department;
+            } else if (payload.department) {
+                payload.department = Number(payload.department);
+            }
+            if (payload.branch === "") {
+                delete payload.branch;
+            }
+            await createUser(payload);
+            navigate("/admin/users");
         } catch (err) {
             console.error("Failed to create user", err);
             const detail = err.response?.data?.detail 
@@ -67,6 +101,48 @@ const CreateUser = () => {
                         <option value="Admin">Admin</option>
                     </select>
                 </div>
+
+                {/* Branch dropdown for Students */}
+                {formData.user_type === "Student" && (
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
+                        <select
+                            name="branch"
+                            value={formData.branch}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        >
+                            <option value="">Select Branch</option>
+                            {BRANCHES.map((b) => (
+                                <option key={b.value} value={b.value}>
+                                    {b.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
+                {/* Department dropdown for Faculty */}
+                {formData.user_type === "Faculty" && (
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                        <select
+                            name="department"
+                            value={formData.department}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        >
+                            <option value="">Select Department</option>
+                            {departments.map((dept) => (
+                                <option key={dept.id} value={dept.id}>
+                                    {dept.department_name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
 
                 {/* Common Fields */}
                 <div>

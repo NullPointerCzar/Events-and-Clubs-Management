@@ -13,6 +13,7 @@ const ProposeEvent = () => {
     title: "",
     description: "",
     venue: "",
+    max_participants: "",
     event_date: "",
   });
 
@@ -47,10 +48,11 @@ const ProposeEvent = () => {
         title: form.title,
         description: form.description,
         venue: form.venue,
+        max_participants: form.max_participants ? parseInt(form.max_participants) : null,
         event_date: form.event_date,
       });
       setSuccess("Event proposed successfully! It is now pending review.");
-      setForm({ club: "", title: "", description: "", venue: "", event_date: "" });
+      setForm({ club: "", title: "", description: "", venue: "", max_participants: "", event_date: "" });
     } catch (err) {
       setError(err.response?.data?.detail || "Failed to propose event.");
     } finally {
@@ -131,6 +133,22 @@ const ProposeEvent = () => {
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="e.g. Main Auditorium, Block A"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Max Participants{" "}
+                <span className="text-gray-400 font-normal">(optional)</span>
+              </label>
+              <input
+                type="number"
+                name="max_participants"
+                value={form.max_participants}
+                onChange={handleChange}
+                min="1"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Leave blank for unlimited"
               />
             </div>
 

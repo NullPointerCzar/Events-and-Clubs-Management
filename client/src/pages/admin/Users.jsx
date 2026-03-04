@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { getAllUsers } from "../../api/users"; // You'll need to create this export in api/users.js
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getAllUsers, deleteUser } from "../../api/users";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [actionMsg, setActionMsg] = useState({ type: "", text: "" });
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
-  }, [location.search]); // Re-fetch or re-filter when URL params change
+  }, [location.search]);
 
   const fetchUsers = async () => {
     try {
@@ -21,6 +23,21 @@ const Users = () => {
       setError("Failed to load users. Please try again later.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (userId, userName) => {
+    if (!confirm(`Delete user "${userName}"? This action cannot be undone.`)) return;
+    setActionMsg({ type: "", text: "" });
+    try {
+      await deleteUser(userId);
+      setActionMsg({ type: "success", text: `User "${userName}" deleted.` });
+      setUsers((prev) => prev.filter((u) => u.id !== userId));
+    } catch (err) {
+      setActionMsg({
+        type: "error",
+        text: err.response?.data?.detail || "Failed to delete user.",
+      });
     }
   };
 
@@ -73,6 +90,18 @@ const Users = () => {
         </Link>
       </div>
 
+      {actionMsg.text && (
+        <div
+          className={`p-3 rounded text-sm ${
+            actionMsg.type === "success"
+              ? "bg-green-50 text-green-600"
+              : "bg-red-50 text-red-600"
+          }`}
+        >
+          {actionMsg.text}
+        </div>
+      )}
+
       {Object.entries(userGroups).map(([groupName, groupUsers]) => (
         <div key={groupName} className="mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-700 border-l-4 border-indigo-500 pl-2">
@@ -90,6 +119,16 @@ const Users = () => {
                             {groupName === 'Students' && (
                               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
                                   Roll Number
+                              </th>
+                            )}
+                            {groupName === 'Students' && (
+                              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
+                                  Branch
+                              </th>
+                            )}
+                            {groupName === 'Faculty' && (
+                              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
+                                  Department
                               </th>
                             )}
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
@@ -114,6 +153,16 @@ const Users = () => {
                                       {user.roll_number || "-"}
                                   </td>
                                 )}
+                                {groupName === 'Students' && (
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-r">
+                                      {user.branch || "-"}
+                                  </td>
+                                )}
+                                {groupName === 'Faculty' && (
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-r">
+                                      {user.department_name || "-"}
+                                  </td>
+                                )}
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-r">
                                     {user.email}
                                 </td>
@@ -125,8 +174,18 @@ const Users = () => {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                    <button className="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                                    <button className="text-red-600 hover:text-red-900">Delete</button>
+                                    <button
+                                      onClick={() => navigate(`/admin/users/${user.id}/edit`)}
+                                      className="text-indigo-600 hover:text-indigo-900 mr-4 cursor-pointer"
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      onClick={() => handleDelete(user.id, user.full_name)}
+                                      className="text-red-600 hover:text-red-900 cursor-pointer"
+                                    >
+                                      Delete
+                                    </button>
                                 </td>
                             </tr>
                         ))}

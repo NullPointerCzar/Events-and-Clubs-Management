@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   getFacultyProposedEvents,
   reviewEvent,
@@ -10,8 +10,11 @@ import { formatDate, formatDateTime } from "../../utils/formatDate";
 
 const AdminEvents = () => {
   const navigate = useNavigate();
-  const [tab, setTab] = useState("pending"); // pending | all
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get("tab") || "pending";
+  const [tab, setTab] = useState(initialTab); // pending | approved | all
   const [pendingEvents, setPendingEvents] = useState([]);
+  const [approvedEvents, setApprovedEvents] = useState([]);
   const [allEvents, setAllEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -21,12 +24,18 @@ const AdminEvents = () => {
   const [remarks, setRemarks] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 
+  const switchTab = (t) => {
+    setTab(t);
+    setSearchParams({ tab: t });
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   useEffect(() => {
     if (tab === "all") fetchAllEvents();
+    if (tab === "approved") fetchApprovedEvents();
   }, [tab, statusFilter]);
 
   const fetchData = async () => {
@@ -37,6 +46,15 @@ const AdminEvents = () => {
       setError("Failed to load events.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchApprovedEvents = async () => {
+    try {
+      const res = await getAllEvents("Approved");
+      setApprovedEvents(res.data);
+    } catch {
+      setError("Failed to load approved events.");
     }
   };
 
@@ -58,6 +76,7 @@ const AdminEvents = () => {
       setReviewingId(null);
       setRemarks("");
       fetchData();
+      fetchApprovedEvents();
       if (tab === "all") fetchAllEvents();
     } catch (err) {
       setActionError(err.response?.data?.detail || "Action failed.");
@@ -71,6 +90,7 @@ const AdminEvents = () => {
       await completeEvent(eventId);
       setActionSuccess("Event marked as completed.");
       fetchData();
+      fetchApprovedEvents();
       fetchAllEvents();
     } catch (err) {
       setActionError(err.response?.data?.detail || "Action failed.");
@@ -102,7 +122,7 @@ const AdminEvents = () => {
       {/* Tabs */}
       <div className="flex items-center gap-4 border-b border-gray-200">
         <button
-          onClick={() => setTab("pending")}
+          onClick={() => switchTab("pending")}
           className={`pb-2 px-1 text-sm font-medium border-b-2 transition cursor-pointer ${
             tab === "pending"
               ? "border-indigo-600 text-indigo-600"
@@ -112,7 +132,17 @@ const AdminEvents = () => {
           Pending Review ({pendingEvents.length})
         </button>
         <button
-          onClick={() => setTab("all")}
+          onClick={() => switchTab("approved")}
+          className={`pb-2 px-1 text-sm font-medium border-b-2 transition cursor-pointer ${
+            tab === "approved"
+              ? "border-indigo-600 text-indigo-600"
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          Approved Events
+        </button>
+        <button
+          onClick={() => switchTab("all")}
           className={`pb-2 px-1 text-sm font-medium border-b-2 transition cursor-pointer ${
             tab === "all"
               ? "border-indigo-600 text-indigo-600"
@@ -220,6 +250,58 @@ const AdminEvents = () => {
                   )}
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ─── Approved Events Tab ─── */}
+      {tab === "approved" && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">Approved / Upcoming Events</h2>
+          {approvedEvents.length === 0 ? (
+            <p className="text-gray-500 text-sm">No approved events.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 text-left text-gray-500">
+                    <th className="py-2 pr-4 font-medium">Title</th>
+                    <th className="py-2 pr-4 font-medium">Club</th>
+                    <th className="py-2 pr-4 font-medium">Event Date</th>
+                    <th className="py-2 pr-4 font-medium">Venue</th>
+                    <th className="py-2 pr-4 font-medium">Created By</th>
+                    <th className="py-2 font-medium">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {approvedEvents.map((ev) => (
+                    <tr key={ev.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 pr-4 font-medium text-gray-800">{ev.title}</td>
+                      <td className="py-3 pr-4 text-gray-600">{ev.club_name}</td>
+                      <td className="py-3 pr-4 text-gray-600">{formatDateTime(ev.event_date)}</td>
+                      <td className="py-3 pr-4 text-gray-600">{ev.venue || "-"}</td>
+                      <td className="py-3 pr-4 text-gray-600">{ev.created_by_name}</td>
+                      <td className="py-3">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleComplete(ev.id)}
+                            className="px-3 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200 cursor-pointer"
+                          >
+                            Complete
+                          </button>
+                          <button
+                            onClick={() => navigate(`/admin/events/${ev.id}/attendance`)}
+                            className="px-3 py-1 text-xs bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 cursor-pointer"
+                          >
+                            Attendance
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -33,6 +34,26 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     user_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     
+    # Department (for faculty)
+    department = models.ForeignKey(
+        'clubs.Department', on_delete=models.SET_NULL,
+        null=True, blank=True, related_name='users',
+        help_text='Department the faculty belongs to'
+    )
+
+    # Branch (for students)
+    BRANCH_CHOICES = (
+        ('BCT', 'BCT - Computer'),
+        ('BCE', 'BCE - Civil'),
+        ('BEE', 'BEE - Electrical'),
+        ('BEI', 'BEI - Electronics'),
+    )
+    branch = models.CharField(
+        max_length=3, choices=BRANCH_CHOICES,
+        blank=True, null=True,
+        help_text='Engineering branch for students'
+    )
+
     # Specific to Students
     roll_number = models.CharField(
         max_length=12, 
