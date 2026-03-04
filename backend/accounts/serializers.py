@@ -92,7 +92,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
-        # This executes the standard login check
+        # Allow login with email, roll_number, or full_name
+        identifier = attrs.get('email', '')
+        if identifier and '@' not in identifier:
+            # Not an email — try roll_number first, then full_name
+            user = (
+                User.objects.filter(roll_number__iexact=identifier).first()
+                or User.objects.filter(full_name__iexact=identifier).first()
+            )
+            if user:
+                attrs['email'] = user.email
+
         data = super().validate(attrs)
 
         # This adds plain text data to the JSON response 
