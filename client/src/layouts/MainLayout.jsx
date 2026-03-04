@@ -22,18 +22,14 @@ const MainLayout = () => {
               >
                 ECM
               </Link>
-              <Link
-                to="/dashboard"
-                className="text-gray-600 hover:text-gray-900"
-              >
-                Dashboard
-              </Link>
-              <Link to="/events" className="text-gray-600 hover:text-gray-900">
-                Events
-              </Link>
-              <Link to="/clubs" className="text-gray-600 hover:text-gray-900">
-                Clubs
-              </Link>
+              {user?.role === "Student" && (
+                <Link
+                  to="/events/propose"
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  Propose Event
+                </Link>
+              )}
               {(user?.role === "Faculty" || user?.role === "Admin") && (
                 <Link
                   to="/faculty"

@@ -6,6 +6,7 @@ const AdminLayout = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(false);
+  const [isClubsMenuOpen, setIsClubsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -76,12 +77,49 @@ const AdminLayout = () => {
                 )}
               </div>
 
-              <Link
-                to="/admin/clubs"
-                className="text-indigo-200 hover:text-white"
+              <div
+                className="relative"
+                onMouseEnter={() => setIsClubsMenuOpen(true)}
+                onMouseLeave={() => setIsClubsMenuOpen(false)}
               >
-                Clubs
-              </Link>
+                <button
+                  className="text-indigo-200 hover:text-white flex items-center gap-1 focus:outline-none py-4"
+                >
+                  Clubs
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {isClubsMenuOpen && (
+                  <div className="absolute top-14 left-0 w-56 bg-white rounded-md shadow-lg py-1 border border-indigo-100">
+                    <Link
+                      to="/admin/clubs?name=NCE%20IT%20Club"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                    >
+                      NCE IT Club
+                    </Link>
+                    <Link
+                      to="/admin/clubs?name=NCE%20Robotics%20Club"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                    >
+                      NCE Robotics Club
+                    </Link>
+                    <Link
+                      to="/admin/clubs?name=CESS"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                    >
+                      CESS
+                    </Link>
+                    <Link
+                      to="/admin/clubs?name=Electrical%20Club"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                    >
+                      Electrical Club
+                    </Link>
+                  </div>
+                )}
+              </div>
               <Link
                 to="/admin/events"
                 className="text-indigo-200 hover:text-white"

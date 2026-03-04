@@ -8,22 +8,17 @@ import AdminLayout from "../layouts/AdminLayout";
 
 import Users from "../pages/admin/Users";
 import CreateUser from "../pages/admin/CreateUser";
+import Clubs from "../pages/admin/Clubs";
+import AdminEvents from "../pages/admin/AdminEvents";
+import ProposeEvent from "../pages/student/ProposeEvent";
+import FacultyEvents from "../pages/faculty/FacultyEvents";
 
 // Placeholder page components — replace with real pages as you build them
 const AdminDashboard = () => (
   <h1 className="text-2xl font-bold">Admin Dashboard</h1>
 );
-const AdminClubs = () => (
-  <h1 className="text-2xl font-bold">Manage Clubs</h1>
-);
-const AdminEvents = () => (
-  <h1 className="text-2xl font-bold">Manage Events</h1>
-);
 const StudentHome = () => (
   <h1 className="text-2xl font-bold">Dashboard — Events & Clubs</h1>
-);
-const FacultyPortal = () => (
-  <h1 className="text-2xl font-bold">Faculty Portal — Approvals</h1>
 );
 
 const AppRoutes = () => {
@@ -45,7 +40,7 @@ const AppRoutes = () => {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/users/create" element={<CreateUser />} />
-        <Route path="/admin/clubs" element={<AdminClubs />} />
+        <Route path="/admin/clubs" element={<Clubs />} />
         <Route path="/admin/events" element={<AdminEvents />} />
       </Route>
 
@@ -58,14 +53,16 @@ const AppRoutes = () => {
         }
       >
         <Route path="/dashboard" element={<StudentHome />} />
-        <Route
-          path="/faculty"
-          element={
-            <ProtectedRoute allowedRoles={["Faculty", "Admin"]}>
-              <FacultyPortal />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/events/propose" element={
+          <ProtectedRoute allowedRoles={["Student"]}>
+            <ProposeEvent />
+          </ProtectedRoute>
+        } />
+        <Route path="/faculty" element={
+          <ProtectedRoute allowedRoles={["Faculty", "Admin"]}>
+            <FacultyEvents />
+          </ProtectedRoute>
+        } />
       </Route>
 
       {/* ── Redirects ── */}

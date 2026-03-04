@@ -12,3 +12,15 @@ export const deleteEvent = (id) => api.delete(`events/${id}/`);
 
 export const approveEvent = (id, data) =>
   api.post(`events/${id}/approve/`, data);
+
+// ── Event proposal flow ──
+export const proposeEvent = (data) => api.post("events/propose/", data);
+
+export const getMyProposedEvents = () => api.get("events/my/");
+
+export const getFacultyProposedEvents = () => api.get("events/review/");
+
+export const reviewEvent = (id, data) =>
+  api.post(`events/${id}/review/`, data);
+
+export const getMyClubs = () => api.get("clubs/my/");
