@@ -4,9 +4,9 @@ from .models import User, Role, UserRole
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'email', 'user_type', 'is_active', 'is_staff')
+    list_display = ('id', 'full_name', 'email', 'user_type', 'roll_number', 'is_active', 'is_staff')
     list_filter = ('user_type', 'is_active')
-    search_fields = ('full_name', 'email')
+    search_fields = ('full_name', 'email', 'roll_number')
     ordering = ('-created_at',)
 
 

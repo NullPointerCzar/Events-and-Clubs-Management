@@ -8,7 +8,7 @@ from .serializers import UserSerializer
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class MyTokenObtainPairView(TokenObtainPairView):
     """
@@ -16,6 +16,15 @@ class MyTokenObtainPairView(TokenObtainPairView):
     alongside the JWT tokens.
     """
     serializer_class = MyTokenObtainPairSerializer
+
+class UserListView(generics.ListCreateAPIView):
+    """
+    Allows Admin to view all users and create new ones.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+
     
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
