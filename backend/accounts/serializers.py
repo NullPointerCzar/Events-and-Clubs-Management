@@ -24,12 +24,16 @@ class UserSerializer(serializers.ModelSerializer):
             if not roll_number:
                 raise serializers.ValidationError({"roll_number": "Roll number is required for students."})
             
-            # Format: NCE + 3 digits + 3 letters + 3 digits (e.g., NCE123ABC456)
-            pattern = r'^NCE\d{3}[A-Z]{3}\d{3}$'
-            if not re.match(pattern, roll_number):
+            # Format: NCE0 + 2-digit year + branch (BCT/BCE/BEE/BEI) + 0 + 2-digit roll
+            pattern = r'^NCE0(\d{2})(BCT|BCE|BEE|BEI)0(\d{2})$'
+            match = re.match(pattern, roll_number.upper())
+            if not match:
                 raise serializers.ValidationError({
-                    "roll_number": "Invalid format. Must be 'NCE' followed by 3 digits, 3 letters, and 3 digits (e.g., NCE123ABC456)."
+                    "roll_number": "Invalid format. Must be NCE0XXBRANCH0XX where XX=batch year, BRANCH=BCT/BCE/BEE/BEI, XX=roll no (e.g., NCE078BCT012)."
                 })
+            # Auto-map branch from roll number
+            data['branch'] = match.group(2)
+            data['roll_number'] = roll_number.upper()
         
         return data
 
@@ -57,11 +61,15 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         roll_number = data.get('roll_number', self.instance.roll_number if self.instance else None)
 
         if user_type == 'Student' and roll_number:
-            pattern = r'^NCE\d{3}[A-Z]{3}\d{3}$'
-            if not re.match(pattern, roll_number):
+            pattern = r'^NCE0(\d{2})(BCT|BCE|BEE|BEI)0(\d{2})$'
+            match = re.match(pattern, roll_number.upper())
+            if not match:
                 raise serializers.ValidationError({
-                    "roll_number": "Invalid format. Must be 'NCE' followed by 3 digits, 3 letters, and 3 digits."
+                    "roll_number": "Invalid format. Must be NCE0XXBRANCH0XX (e.g., NCE078BCT012)."
                 })
+            # Auto-map branch from roll number
+            data['branch'] = match.group(2)
+            data['roll_number'] = roll_number.upper()
         return data
 
     def update(self, instance, validated_data):

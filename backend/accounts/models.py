@@ -60,7 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True, 
         null=True, 
         unique=True,
-        help_text="Format: NCE Followed by 3 digits, 3 letters, 3 digits (e.g. NCE123ABC456)"
+        help_text="Format: NCE0XXBRANCH0XX (e.g. NCE078BCT012)"
     )
 
     is_active = models.BooleanField(default=True)

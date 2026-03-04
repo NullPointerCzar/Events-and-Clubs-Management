@@ -3,12 +3,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../../api/auth";
 import { getDepartments } from "../../api/users";
 
-const BRANCHES = [
-  { value: "BCT", label: "BCT - Computer" },
-  { value: "BCE", label: "BCE - Civil" },
-  { value: "BEE", label: "BEE - Electrical" },
-  { value: "BEI", label: "BEI - Electronics" },
-];
+const BRANCH_MAP = {
+  BCT: "BCT - Computer",
+  BCE: "BCE - Civil",
+  BEE: "BEE - Electrical",
+  BEI: "BEI - Electronics",
+};
+
+const ROLL_REGEX = /^NCE0\d{2}(BCT|BCE|BEE|BEI)0\d{2}$/i;
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -31,6 +33,17 @@ const Register = () => {
       .catch(() => {});
   }, []);
 
+  // Auto-detect branch from roll number
+  const handleRollChange = (e) => {
+    const val = e.target.value.toUpperCase();
+    const match = val.match(/^NCE0\d{2}(BCT|BCE|BEE|BEI)/i);
+    setForm({
+      ...form,
+      roll_number: val,
+      branch: match ? match[1].toUpperCase() : "",
+    });
+  };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -44,6 +57,16 @@ const Register = () => {
       if (payload.user_type !== "Student") {
         delete payload.roll_number;
         delete payload.branch;
+      } else {
+        // Validate roll number format before sending
+        if (!ROLL_REGEX.test(payload.roll_number)) {
+          setError("Invalid roll number. Format: NCE0XXBRANCH0XX (e.g. NCE078BCT012)");
+          setLoading(false);
+          return;
+        }
+        payload.roll_number = payload.roll_number.toUpperCase();
+        // Branch is auto-mapped on the backend from roll_number; remove explicit branch
+        delete payload.branch;
       }
       if (payload.user_type !== "Faculty") {
         delete payload.department;
@@ -53,10 +76,6 @@ const Register = () => {
         delete payload.department;
       } else if (payload.department) {
         payload.department = Number(payload.department);
-      }
-      // Remove empty branch
-      if (payload.branch === "") {
-        delete payload.branch;
       }
       await registerUser(payload);
       navigate("/login", { state: { registered: true } });
@@ -128,20 +147,24 @@ const Register = () => {
         </select>
 
         {form.user_type === "Student" && (
-          <select
-            name="branch"
-            value={form.branch}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          >
-            <option value="">Select Branch</option>
-            {BRANCHES.map((b) => (
-              <option key={b.value} value={b.value}>
-                {b.label}
-              </option>
-            ))}
-          </select>
+          <div>
+            <input
+              type="text"
+              name="roll_number"
+              placeholder="Roll Number (e.g. NCE078BCT012)"
+              value={form.roll_number}
+              onChange={handleRollChange}
+              required
+              maxLength={12}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 uppercase"
+            />
+            <p className="mt-1 text-xs text-gray-500">Format: NCE0<span className="font-semibold">YY</span>BRANCH0<span className="font-semibold">RR</span> &mdash; YY=batch year, BRANCH=BCT/BCE/BEE/BEI, RR=roll no</p>
+            {form.branch && (
+              <p className="mt-1 text-sm text-indigo-600 font-medium">
+                Detected branch: {BRANCH_MAP[form.branch] || form.branch}
+              </p>
+            )}
+          </div>
         )}
 
         {form.user_type === "Faculty" && (
@@ -159,21 +182,6 @@ const Register = () => {
               </option>
             ))}
           </select>
-        )}
-
-        {form.user_type === "Student" && (
-          <div>
-            <input
-              type="text"
-              name="roll_number"
-              placeholder="Roll Number (e.g. NCE123ABC456)"
-              value={form.roll_number}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            />
-            <p className="mt-1 text-xs text-gray-500">Format: NCE + 3 digits + 3 letters + 3 digits</p>
-          </div>
         )}
 
         <button
