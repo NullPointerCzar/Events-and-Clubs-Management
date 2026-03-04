@@ -4,7 +4,7 @@ from .models import Department, Club, ClubMember
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'department_name')
+    list_display = ('id', 'department_name', 'hod')
     search_fields = ('department_name',)
 
 
