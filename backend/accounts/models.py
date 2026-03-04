@@ -54,3 +54,15 @@ class Role(models.Model):
 
     def __str__(self):
         return self.role_name
+
+
+class UserRole(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_roles')
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='role_users')
+    assigned_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'role')
+
+    def __str__(self):
+        return f"{self.user.email} - {self.role.role_name}"
