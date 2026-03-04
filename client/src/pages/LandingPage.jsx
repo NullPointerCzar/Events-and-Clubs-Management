@@ -11,12 +11,12 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white overflow-x-hidden">
+    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
       {/* ── Navbar ── */}
       <nav
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrollY > 50
-            ? "bg-gray-950/95 backdrop-blur-md shadow-xl shadow-indigo-500/5 border-b border-white/5"
+            ? "bg-white/95 backdrop-blur-md shadow-xl shadow-gray-200 border-b border-gray-200"
             : "bg-transparent"
         }`}
       >
@@ -26,14 +26,14 @@ const LandingPage = () => {
               E
             </div>
             <span className="text-xl font-bold tracking-tight">
-              <span className="text-white">ECM</span>
-              <span className="text-indigo-400"> Portal</span>
+              <span className="text-gray-900">ECM</span>
+              <span className="text-indigo-600"> Portal</span>
             </span>
           </div>
           <div className="flex items-center gap-4">
             <Link
               to="/login"
-              className="px-5 py-2.5 text-sm font-medium text-indigo-300 hover:text-white border border-indigo-500/30 hover:border-indigo-400/60 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10"
+              className="px-5 py-2.5 text-sm font-medium text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:border-indigo-400 rounded-xl transition-all duration-300"
             >
               Sign In
             </Link>
@@ -51,22 +51,22 @@ const LandingPage = () => {
       <section className="relative min-h-screen flex items-center justify-center pt-20">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 -left-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse delay-1000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-indigo-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 -left-32 w-96 h-96 bg-indigo-100 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-purple-100 rounded-full blur-3xl animate-pulse delay-1000" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-indigo-50 rounded-full blur-3xl" />
           {/* Grid pattern */}
           <div
             className="absolute inset-0 opacity-3"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)",
+                "linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px)",
               backgroundSize: "60px 60px",
             }}
           />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-8 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-600 text-sm font-medium mb-8">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             Campus Events & Clubs Platform
           </div>
@@ -74,12 +74,12 @@ const LandingPage = () => {
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6">
             Where Campus
             <br />
-            <span className="bg-linear-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
               Life Happens
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
             Discover clubs, propose events, track participation, and be part of
             something bigger. Your one-stop platform for everything happening on
             campus.
@@ -95,7 +95,7 @@ const LandingPage = () => {
             </Link>
             <Link
               to="/login"
-              className="group flex items-center gap-2 px-8 py-4 text-base font-semibold text-gray-300 hover:text-white border border-white/10 hover:border-white/20 rounded-2xl transition-all duration-300 hover:bg-white/5"
+              className="group flex items-center gap-2 px-8 py-4 text-base font-semibold text-gray-600 hover:text-gray-900 border border-gray-300 hover:border-gray-500 rounded-2xl transition-all duration-300 hover:bg-gray-50"
             >
               Sign In
               <svg
@@ -124,9 +124,9 @@ const LandingPage = () => {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="group p-4 rounded-2xl bg-white/3 border border-white/6 hover:border-indigo-500/30 transition-all duration-300 hover:bg-white/5"
+                className="group p-4 rounded-2xl bg-gray-50 border border-gray-200 hover:border-indigo-300 transition-all duration-300 hover:bg-indigo-50/50"
               >
-                <div className="text-3xl font-black bg-linear-to-br from-white to-gray-400 bg-clip-text text-transparent">
+                <div className="text-3xl font-black text-gray-900">
                   {stat.number}
                 </div>
                 <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
@@ -136,7 +136,7 @@ const LandingPage = () => {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500 animate-bounce">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400 animate-bounce">
           <span className="text-xs tracking-widest uppercase">Scroll</span>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -148,13 +148,13 @@ const LandingPage = () => {
       <section className="relative py-32 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <p className="text-indigo-400 font-semibold text-sm uppercase tracking-widest mb-3">
+            <p className="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-3">
               Features
             </p>
             <h2 className="text-4xl sm:text-5xl font-black tracking-tight">
               Everything You Need
             </h2>
-            <p className="text-gray-400 mt-4 max-w-xl mx-auto">
+            <p className="text-gray-500 mt-4 max-w-xl mx-auto">
               From joining clubs to attending events — manage your entire campus
               experience in one place.
             </p>
@@ -170,7 +170,7 @@ const LandingPage = () => {
                 ),
                 title: "Club Management",
                 desc: "Join clubs, hold positions like President, VP, Event Manager, and collaborate with peers.",
-                iconClass: "bg-indigo-500/10 border-indigo-500/20 text-indigo-400",
+                iconClass: "bg-indigo-50 border-indigo-200 text-indigo-600",
               },
               {
                 icon: (
@@ -180,7 +180,7 @@ const LandingPage = () => {
                 ),
                 title: "Event Discovery",
                 desc: "Browse upcoming events, register with one click, and never miss what matters.",
-                iconClass: "bg-purple-500/10 border-purple-500/20 text-purple-400",
+                iconClass: "bg-purple-50 border-purple-200 text-purple-600",
               },
               {
                 icon: (
@@ -190,7 +190,7 @@ const LandingPage = () => {
                 ),
                 title: "Propose Events",
                 desc: "Students can propose events for approval — from hackathons to cultural nights.",
-                iconClass: "bg-amber-500/10 border-amber-500/20 text-amber-400",
+                iconClass: "bg-amber-50 border-amber-200 text-amber-600",
               },
               {
                 icon: (
@@ -200,7 +200,7 @@ const LandingPage = () => {
                 ),
                 title: "Attendance Tracking",
                 desc: "Mark and view attendance for every event — complete visibility for admins and faculty.",
-                iconClass: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400",
+                iconClass: "bg-emerald-50 border-emerald-200 text-emerald-600",
               },
               {
                 icon: (
@@ -210,7 +210,7 @@ const LandingPage = () => {
                 ),
                 title: "Admin Dashboard",
                 desc: "Powerful admin panel with stats, user management, and event approval workflows.",
-                iconClass: "bg-rose-500/10 border-rose-500/20 text-rose-400",
+                iconClass: "bg-rose-50 border-rose-200 text-rose-600",
               },
               {
                 icon: (
@@ -220,20 +220,20 @@ const LandingPage = () => {
                 ),
                 title: "Branch & Dept Views",
                 desc: "Organized views by engineering branch and department for easy navigation.",
-                iconClass: "bg-cyan-500/10 border-cyan-500/20 text-cyan-400",
+                iconClass: "bg-cyan-50 border-cyan-200 text-cyan-600",
               },
             ].map((feature) => (
               <div
                 key={feature.title}
-                className="group relative p-8 rounded-3xl bg-white/2 border border-white/6 hover:border-indigo-500/30 transition-all duration-500 hover:bg-white/4 hover:-translate-y-1"
+                className="group relative p-8 rounded-3xl bg-gray-50 border border-gray-200 hover:border-indigo-300 transition-all duration-500 hover:bg-white hover:shadow-md hover:-translate-y-1"
               >
                 <div
                   className={`w-12 h-12 rounded-2xl border flex items-center justify-center mb-5 ${feature.iconClass}`}
                 >
                   {feature.icon}
                 </div>
-                <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
+                <h3 className="text-lg font-bold mb-2 text-gray-900">{feature.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">
                   {feature.desc}
                 </p>
               </div>
@@ -244,13 +244,13 @@ const LandingPage = () => {
 
       {/* ── How It Works ── */}
       <section className="relative py-32 px-6">
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-indigo-500/3 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-indigo-50/60 to-transparent" />
         <div className="relative max-w-5xl mx-auto">
           <div className="text-center mb-20">
-            <p className="text-indigo-400 font-semibold text-sm uppercase tracking-widest mb-3">
+            <p className="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-3">
               How It Works
             </p>
-            <h2 className="text-4xl sm:text-5xl font-black tracking-tight">
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-gray-900">
               Three Simple Steps
             </h2>
           </div>
@@ -275,13 +275,13 @@ const LandingPage = () => {
             ].map((item, i) => (
               <div key={item.step} className="relative text-center">
                 {i < 2 && (
-                  <div className="hidden md:block absolute top-10 left-[60%] w-4/5 border-t border-dashed border-white/10" />
+                  <div className="hidden md:block absolute top-10 left-[60%] w-4/5 border-t border-dashed border-gray-300" />
                 )}
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-linear-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/20 text-2xl font-black text-indigo-400 mb-6">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-indigo-50 border border-indigo-200 text-2xl font-black text-indigo-600 mb-6">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
+                <h3 className="text-xl font-bold mb-3 text-gray-900">{item.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -294,10 +294,10 @@ const LandingPage = () => {
       <section className="relative py-32 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <p className="text-indigo-400 font-semibold text-sm uppercase tracking-widest mb-3">
+            <p className="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-3">
               For Everyone
             </p>
-            <h2 className="text-4xl sm:text-5xl font-black tracking-tight">
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-gray-900">
               Built for Every Role
             </h2>
           </div>
@@ -340,19 +340,19 @@ const LandingPage = () => {
             ].map((item) => (
               <div
                 key={item.role}
-                className="group relative overflow-hidden rounded-3xl bg-white/2 border border-white/6 hover:border-white/12 transition-all duration-500 hover:-translate-y-2"
+                className="group relative overflow-hidden rounded-3xl bg-white border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-500 hover:-translate-y-2"
               >
                 <div
                   className={`h-2 bg-linear-to-r ${item.gradient}`}
                 />
                 <div className="p-8">
-                  <h3 className="text-2xl font-black mb-3">{item.role}</h3>
-                  <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+                  <h3 className="text-2xl font-black mb-3 text-gray-900">{item.role}</h3>
+                  <p className="text-gray-500 text-sm mb-6 leading-relaxed">
                     {item.desc}
                   </p>
                   <ul className="space-y-3">
                     {item.features.map((f) => (
-                      <li key={f} className="flex items-center gap-3 text-sm text-gray-300">
+                      <li key={f} className="flex items-center gap-3 text-sm text-gray-700">
                         <svg
                           className="w-4 h-4 text-emerald-400 shrink-0"
                           fill="none"
@@ -380,12 +380,12 @@ const LandingPage = () => {
       {/* ── CTA Section ── */}
       <section className="relative py-32 px-6">
         <div className="relative max-w-4xl mx-auto text-center">
-          <div className="absolute inset-0 -m-12 rounded-[3rem] bg-linear-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 blur-xl" />
-          <div className="relative p-12 rounded-[2.5rem] bg-white/2 border border-white/6 backdrop-blur-sm">
-            <h2 className="text-4xl sm:text-5xl font-black tracking-tight mb-4">
+          <div className="absolute inset-0 -m-12 rounded-[3rem] bg-linear-to-br from-indigo-100 via-purple-50 to-pink-100 blur-xl" />
+          <div className="relative p-12 rounded-[2.5rem] bg-white border border-gray-200 shadow-xl">
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tight mb-4 text-gray-900">
               Ready to Dive In?
             </h2>
-            <p className="text-gray-400 text-lg mb-10 max-w-lg mx-auto">
+            <p className="text-gray-500 text-lg mb-10 max-w-lg mx-auto">
               Join hundreds of students already using ECM Portal to stay
               connected with campus life.
             </p>
@@ -398,7 +398,7 @@ const LandingPage = () => {
               </Link>
               <Link
                 to="/login"
-                className="px-10 py-4 text-base font-semibold text-gray-300 hover:text-white border border-white/10 hover:border-white/20 rounded-2xl transition-all duration-300 hover:bg-white/5"
+                className="px-10 py-4 text-base font-semibold text-gray-600 hover:text-gray-900 border border-gray-300 hover:border-gray-500 rounded-2xl transition-all duration-300 hover:bg-gray-50"
               >
                 I Already Have One
               </Link>
@@ -408,7 +408,7 @@ const LandingPage = () => {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-white/6 py-12 px-6">
+      <footer className="border-t border-gray-200 py-12 px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm font-black">
@@ -418,7 +418,7 @@ const LandingPage = () => {
               Events & Clubs Management Portal
             </span>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-400">
             &copy; {new Date().getFullYear()} NCIT. All rights reserved.
           </p>
         </div>
