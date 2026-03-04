@@ -8,6 +8,7 @@ const Register = () => {
     email: "",
     password: "",
     user_type: "Student",
+    roll_number: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +23,12 @@ const Register = () => {
     setError("");
     setLoading(true);
     try {
-      await registerUser(form);
+      // Only send roll_number for students
+      const payload = { ...form };
+      if (payload.user_type !== "Student") {
+        delete payload.roll_number;
+      }
+      await registerUser(payload);
       navigate("/login", { state: { registered: true } });
     } catch (err) {
       const data = err.response?.data;
@@ -90,6 +96,21 @@ const Register = () => {
           <option value="Faculty">Faculty</option>
           <option value="Staff">Staff</option>
         </select>
+
+        {form.user_type === "Student" && (
+          <div>
+            <input
+              type="text"
+              name="roll_number"
+              placeholder="Roll Number (e.g. NCE123ABC456)"
+              value={form.roll_number}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
+            <p className="mt-1 text-xs text-gray-500">Format: NCE + 3 digits + 3 letters + 3 digits</p>
+          </div>
+        )}
 
         <button
           type="submit"

@@ -111,7 +111,7 @@ const Users = () => {
                                 </td>
                                 {groupName === 'Students' && (
                                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-r font-mono">
-                                      {user.role_number || user.roll_number || "-"}
+                                      {user.roll_number || "-"}
                                   </td>
                                 )}
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-r">

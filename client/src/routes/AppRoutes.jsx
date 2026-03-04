@@ -10,15 +10,15 @@ import Users from "../pages/admin/Users";
 import CreateUser from "../pages/admin/CreateUser";
 import Clubs from "../pages/admin/Clubs";
 import AdminEvents from "../pages/admin/AdminEvents";
+import EventAttendance from "../pages/admin/EventAttendance";
 import ProposeEvent from "../pages/student/ProposeEvent";
+import EventDiscovery from "../pages/student/EventDiscovery";
+import MyEvents from "../pages/student/MyEvents";
 import FacultyEvents from "../pages/faculty/FacultyEvents";
 
 // Placeholder page components — replace with real pages as you build them
 const AdminDashboard = () => (
   <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-);
-const StudentHome = () => (
-  <h1 className="text-2xl font-bold">Dashboard — Events & Clubs</h1>
 );
 
 const AppRoutes = () => {
@@ -42,6 +42,7 @@ const AppRoutes = () => {
         <Route path="/admin/users/create" element={<CreateUser />} />
         <Route path="/admin/clubs" element={<Clubs />} />
         <Route path="/admin/events" element={<AdminEvents />} />
+        <Route path="/admin/events/:eventId/attendance" element={<EventAttendance />} />
       </Route>
 
       {/* ── Main app routes (with MainLayout) ── */}
@@ -52,7 +53,12 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route path="/dashboard" element={<StudentHome />} />
+        <Route path="/dashboard" element={<EventDiscovery />} />
+        <Route path="/my-events" element={
+          <ProtectedRoute allowedRoles={["Student"]}>
+            <MyEvents />
+          </ProtectedRoute>
+        } />
         <Route path="/events/propose" element={
           <ProtectedRoute allowedRoles={["Student"]}>
             <ProposeEvent />
@@ -61,6 +67,11 @@ const AppRoutes = () => {
         <Route path="/faculty" element={
           <ProtectedRoute allowedRoles={["Faculty", "Admin"]}>
             <FacultyEvents />
+          </ProtectedRoute>
+        } />
+        <Route path="/faculty/events/:eventId/attendance" element={
+          <ProtectedRoute allowedRoles={["Faculty", "Admin"]}>
+            <EventAttendance />
           </ProtectedRoute>
         } />
       </Route>

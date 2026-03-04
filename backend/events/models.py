@@ -21,6 +21,12 @@ class Event(models.Model):
     status = models.CharField(
         max_length=50, choices=STATUS_CHOICES, default='Proposed')
 
+    venue = models.CharField(max_length=255, blank=True, default='')
+    max_participants = models.PositiveIntegerField(
+        null=True, blank=True,
+        help_text='Maximum number of participants. Leave blank for unlimited.'
+    )
+
     event_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
 
