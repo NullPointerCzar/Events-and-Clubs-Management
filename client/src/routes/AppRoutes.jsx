@@ -6,12 +6,12 @@ import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "../layouts/MainLayout";
 import AdminLayout from "../layouts/AdminLayout";
 
+import Users from "../pages/admin/Users";
+import CreateUser from "../pages/admin/CreateUser";
+
 // Placeholder page components — replace with real pages as you build them
 const AdminDashboard = () => (
   <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-);
-const AdminUsers = () => (
-  <h1 className="text-2xl font-bold">Manage Users</h1>
 );
 const AdminClubs = () => (
   <h1 className="text-2xl font-bold">Manage Clubs</h1>
@@ -43,7 +43,8 @@ const AppRoutes = () => {
         }
       >
         <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/users" element={<Users />} />
+        <Route path="/admin/users/create" element={<CreateUser />} />
         <Route path="/admin/clubs" element={<AdminClubs />} />
         <Route path="/admin/events" element={<AdminEvents />} />
       </Route>

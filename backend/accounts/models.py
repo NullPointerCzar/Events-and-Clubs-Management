@@ -32,6 +32,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('Admin', 'Admin'),
     )
     user_type = models.CharField(max_length=50, choices=TYPE_CHOICES)
+    
+    # Specific to Students
+    roll_number = models.CharField(
+        max_length=12, 
+        blank=True, 
+        null=True, 
+        unique=True,
+        help_text="Format: NCE Followed by 3 digits, 3 letters, 3 digits (e.g. NCE123ABC456)"
+    )
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # Required for Admin access
