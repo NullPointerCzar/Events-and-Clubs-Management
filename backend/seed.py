@@ -11,6 +11,11 @@ from clubs.models import Club, ClubMember, Department
 from events.models import Event, EventApproval
 from participation.models import EventRegistration, Attendance
 
+# ── Guard: skip if already seeded ──
+if User.objects.filter(user_type="Faculty").exists():
+    print("Database already seeded — skipping.")
+    sys.exit(0)
+
 # ── Departments ──
 dept_names = ["Computer Engineering", "Civil Engineering", "Electrical Engineering", "Electronics Engineering"]
 for name in dept_names:
