@@ -17,22 +17,22 @@ print(f"Departments: {[d.department_name for d in depts]}")
 
 # ── Faculty (16 faculty, 4 per dept) ──
 faculty_names = [
-    ("Dr. Ramesh Karki", "ramesh.karki@ncit.edu"),
-    ("Dr. Sita Sharma", "sita.sharma@ncit.edu"),
-    ("Dr. Binod Thapa", "binod.thapa@ncit.edu"),
-    ("Dr. Sunita Maharjan", "sunita.maharjan@ncit.edu"),
-    ("Prof. Hari Bahadur", "hari.bahadur@ncit.edu"),
-    ("Prof. Gita Pandey", "gita.pandey@ncit.edu"),
-    ("Prof. Rajesh Shrestha", "rajesh.shrestha@ncit.edu"),
-    ("Prof. Anita Gurung", "anita.gurung@ncit.edu"),
-    ("Dr. Prakash Adhikari", "prakash.adhikari@ncit.edu"),
-    ("Dr. Meena Rai", "meena.rai@ncit.edu"),
-    ("Prof. Dipak Bhandari", "dipak.bhandari@ncit.edu"),
-    ("Prof. Kamala Khadka", "kamala.khadka@ncit.edu"),
-    ("Dr. Sunil Pokharel", "sunil.pokharel@ncit.edu"),
-    ("Dr. Laxmi Tamang", "laxmi.tamang@ncit.edu"),
-    ("Prof. Bikash Joshi", "bikash.joshi@ncit.edu"),
-    ("Prof. Sarita Regmi", "sarita.regmi@ncit.edu"),
+    ("Dr. Ramesh Karki", "ramesh.karki@nce.edu"),
+    ("Dr. Sita Sharma", "sita.sharma@nce.edu"),
+    ("Dr. Binod Thapa", "binod.thapa@nce.edu"),
+    ("Dr. Sunita Maharjan", "sunita.maharjan@nce.edu"),
+    ("Prof. Hari Bahadur", "hari.bahadur@nce.edu"),
+    ("Prof. Gita Pandey", "gita.pandey@nce.edu"),
+    ("Prof. Rajesh Shrestha", "rajesh.shrestha@nce.edu"),
+    ("Prof. Anita Gurung", "anita.gurung@nce.edu"),
+    ("Dr. Prakash Adhikari", "prakash.adhikari@nce.edu"),
+    ("Dr. Meena Rai", "meena.rai@nce.edu"),
+    ("Prof. Dipak Bhandari", "dipak.bhandari@nce.edu"),
+    ("Prof. Kamala Khadka", "kamala.khadka@nce.edu"),
+    ("Dr. Sunil Pokharel", "sunil.pokharel@nce.edu"),
+    ("Dr. Laxmi Tamang", "laxmi.tamang@nce.edu"),
+    ("Prof. Bikash Joshi", "bikash.joshi@nce.edu"),
+    ("Prof. Sarita Regmi", "sarita.regmi@nce.edu"),
 ]
 
 faculty_users = []
@@ -75,7 +75,7 @@ for b_idx, branch in enumerate(branches):
         ln = last_names[(b_idx * 5 + roll) % len(last_names)]
         full_name = f"{fn} {ln}"
         roll_str = f"NCE078{branch}0{roll:02d}"
-        email = f"{fn.lower()}.{ln.lower()}.{branch.lower()}{roll:02d}@ncit.edu"
+        email = f"{fn.lower()}.{ln.lower()}.{branch.lower()}{roll:02d}@nce.edu"
         u = User.objects.create_user(
             email=email, password="student123",
             full_name=full_name, user_type="Student",
@@ -86,10 +86,10 @@ print(f"Created {len(students)} students")
 
 # ── Staff (4) ──
 staff_data = [
-    ("Bishnu Prasad", "bishnu.prasad@ncit.edu"),
-    ("Durga Tamang", "durga.tamang@ncit.edu"),
-    ("Indra Bahadur", "indra.bahadur@ncit.edu"),
-    ("Kumari Basnet", "kumari.basnet@ncit.edu"),
+    ("Bishnu Prasad", "bishnu.prasad@nce.edu"),
+    ("Durga Tamang", "durga.tamang@nce.edu"),
+    ("Indra Bahadur", "indra.bahadur@nce.edu"),
+    ("Kumari Basnet", "kumari.basnet@nce.edu"),
 ]
 for name, email in staff_data:
     User.objects.create_user(email=email, password="staff123",
@@ -98,14 +98,14 @@ print(f"Created {len(staff_data)} staff")
 
 # ── Clubs (8 clubs) ──
 club_defs = [
-    ("NCIT Robotics Club", "Building the future with autonomous robots and embedded systems.", False),
-    ("NCIT Coding Club", "Competitive programming, hackathons, and open-source contributions.", False),
-    ("NCIT Entrepreneurship Cell", "Fostering startup culture and innovation among students.", False),
-    ("NCIT Sports Club", "Organizing inter-college tournaments and promoting fitness.", False),
-    ("NCIT Creative Arts Society", "Photography, filmmaking, music, and performing arts.", False),
-    ("NCIT Debate & MUN Club", "Public speaking, parliamentary debates, and Model UN.", False),
-    ("NCIT Environment Club", "Green campus initiatives, tree plantation, and awareness drives.", False),
-    ("NCIT Student Council", "Official student governance and campus-wide coordination.", True),
+    ("NCE Robotics Club", "Building the future with autonomous robots and embedded systems.", False),
+    ("NCE Coding Club", "Competitive programming, hackathons, and open-source contributions.", False),
+    ("NCE Entrepreneurship Cell", "Fostering startup culture and innovation among students.", False),
+    ("NCE Sports Club", "Organizing inter-college tournaments and promoting fitness.", False),
+    ("NCE Creative Arts Society", "Photography, filmmaking, music, and performing arts.", False),
+    ("NCE Debate & MUN Club", "Public speaking, parliamentary debates, and Model UN.", False),
+    ("NCE Environment Club", "Green campus initiatives, tree plantation, and awareness drives.", False),
+    ("NCE Student Council", "Official student governance and campus-wide coordination.", True),
 ]
 
 positions = ["President", "Vice President", "Event Manager", "Social Media Manager", "Graphics Designer"]
@@ -141,7 +141,7 @@ event_data = [
     ("Inter-College Robo Race", "Robotics competition with line-following and obstacle avoidance."),
     ("Hackathon 2026", "48-hour coding marathon to build innovative solutions."),
     ("Startup Pitch Night", "Students pitch their business ideas to a panel of judges."),
-    ("NCIT Premier League", "Inter-department cricket tournament."),
+    ("NCE Premier League", "Inter-department cricket tournament."),
     ("Photography Walk", "Explore Kathmandu through the lens."),
     ("Parliamentary Debate", "Oxford-style debate on current affairs."),
     ("Tree Plantation Drive", "Plant 500 trees on campus and nearby areas."),
@@ -149,7 +149,7 @@ event_data = [
     ("AI Workshop", "Hands-on workshop on machine learning with Python."),
     ("Code Clash", "1v1 competitive programming battle."),
     ("Women in Tech Talk", "Panel discussion with successful women in technology."),
-    ("NCIT Marathon", "5K fun run around the campus."),
+    ("NCE Marathon", "5K fun run around the campus."),
     ("Short Film Festival", "Screening of student-made short films."),
     ("Model United Nations", "Simulate UN committees and debate global issues."),
     ("E-Waste Collection Drive", "Collect and responsibly recycle electronic waste."),
