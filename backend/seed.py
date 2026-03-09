@@ -11,7 +11,10 @@ from clubs.models import Club, ClubMember, Department
 from events.models import Event, EventApproval
 from participation.models import EventRegistration, Attendance
 
-# ── Departments (already exist) ──
+# ── Departments ──
+dept_names = ["Computer Engineering", "Civil Engineering", "Electrical Engineering", "Electronics Engineering"]
+for name in dept_names:
+    Department.objects.get_or_create(department_name=name)
 depts = list(Department.objects.all())
 print(f"Departments: {[d.department_name for d in depts]}")
 
